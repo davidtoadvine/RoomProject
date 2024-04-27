@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG Map Overlay</title>
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Include Leaflet.draw CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Leaflet.draw JavaScript -->
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+
+    <style>
+      /* Style the map container */
+      html,
+      body,
+      #map {
+        margin: 0;
+        padding: 0;
+        width: 90%;
+        height: 90%;
+      }
+      /* Style the map container */
+      #map-container {
+        width: 100vw; /* Set width to 100% of the viewport width */
+        height: 100vh; /* Set height to 60% of the viewport height */
+      }
+      #dropdownContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1px;
+        margin-left: 10px;
+      }
+      h1 {
+        margin: 5px;
+        margin-right: 10px;
+        font-size: large;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+
+  <!-- ////////////////////////////////////////////////DROPDOWN DROPDOWN DROPDOWN///////////////////////////////////////////// -->
+  <body>
+    <div id="dropdownContainer" class="dropdown">
+      <h1>Room-Ass</h1>
+      <div id="dropdownContainer"></div>
+      <script>
+        const buildings = [
+          {
+            name: "Ta Chai",
+            floors: [
+              {
+                name: "Floor",
+                path: "../pics/Tachai/Floor.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [100, 100],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: "Oneida",
+            floors: [
+              {
+                name: "Floor 1",
+                path: "../pics/Oneida/Floor1.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [100, 100],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+              {
+                name: "Floor 2",
+                path: "../pics/Oneida/Floor2.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [100, 100],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: "Harmony",
+            floors: [
+              {
+                name: "Floor 1",
+                path: "../pics/Harmony/Floor1.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [100, 100],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: "Morningstar",
+            floors: [
+              {
+                name: "Floor 1",
+                path: "../pics/Morningstar/Floor1.png",
+                dims: [400, 211],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [
+                      [80.12, 90],
+                      [73.94, 90],
+                      [73.94, 62.93],
+                      [80.12, 62.93],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 2",
+                    coords: [
+                      [73.54, 89.65],
+                      [64.5, 89.65],
+                      [64.5, 63.28],
+                      [73.54, 63.28],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 3",
+                    coords: [
+                      [63.73, 90.7],
+                      [49.43, 90.7],
+                      [49.43, 63.63],
+                      [63.73, 63.63],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 4",
+                    coords: [
+                      [80.06, 142.38],
+                      [74.42, 142.38],
+                      [74.42, 119.53],
+                      [80.06, 119.53],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 5",
+                    coords: [
+                      [73.84, 142.73],
+                      [64.5, 142.73],
+                      [64.5, 119.18],
+                      [73.84, 119.18],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 6",
+                    coords: [
+                      [63.73, 143.09],
+                      [49.43, 143.09],
+                      [49.43, 118.48],
+                      [63.73, 118.48],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+              {
+                name: "Floor 2",
+                path: "../pics/Morningstar/Floor2.png",
+                dims: [400, 211],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [
+                      [83.2, 67.5],
+                      [79.37, 67.5],
+                      [79.37, 49.57],
+                      [83.2, 49.57],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 2",
+                    coords: [
+                      [79.11, 67.5],
+                      [74.22, 67.5],
+                      [74.22, 49.92],
+                      [79.11, 49.92],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 3",
+                    coords: [
+                      [73.84, 76.64],
+                      [61.8, 76.64],
+                      [61.8, 49.92],
+                      [73.84, 49.92],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 4",
+                    coords: [
+                      [61.3, 75.94],
+                      [36.94, 75.94],
+                      [36.94, 49.92],
+                      [61.3, 49.92],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 5",
+                    coords: [
+                      [83.2, 133.95],
+                      [79.94, 133.95],
+                      [79.94, 80.86],
+                      [83.2, 80.86],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                  {
+                    name: "room 6",
+                    coords: [
+                      [83.16, 157.15],
+                      [79.82, 157.15],
+                      [79.82, 135.0],
+                      [83.16, 135.0],
+                    ],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+              {
+                name: "Floor 3",
+                path: "../pics/Morningstar/Floor3.png",
+                dims: [400, 211],
+                rooms: [
+                  {
+                    name: "room 3",
+                    coords: [
+                      [76.11, 131.48],
+                      [62.13, 131.48],
+                      [62.13, 75.59],
+                      [76.11, 75.59],
+                    ],
+                    availability: true,
+                    inhabitant: "yet another person",
+                  },
+                ],
+              },
+            ],
+          },
+
+          {
+            name: "Kaweah",
+            floors: [
+              {
+                name: "Floor 1",
+                path: "../pics/Kaweah/Floor1.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [100, 100],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+              {
+                name: "Floor 2",
+                path: "../pics/Kaweah/Floor2.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 2",
+                    coords: [150, 150],
+                    availability: false,
+                    inhabitant: "another person",
+                  },
+                ],
+              },
+              {
+                name: "Floor 3",
+                path: "../pics/Kaweah/Floor3.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 3",
+                    coords: [200, 200],
+                    availability: true,
+                    inhabitant: "yet another person",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: "Nashoba",
+            floors: [
+              {
+                name: "Floor 1",
+                path: "../pics/Nashoba/Floor1.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [100, 100],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: "Tupelo",
+            floors: [
+              {
+                name: "Floor 1",
+                path: "../pics/Tupelo/Floor1.png",
+                dims: [400, 400],
+                rooms: [
+                  {
+                    name: "room 1",
+                    coords: [100, 100],
+                    availability: true,
+                    inhabitant: "somebody",
+                  },
+                ],
+              },
+            ],
+          },
+        ];
+
+        /////////////////////////////////////////////////////////////////
+        function displayRoomsForFloor(roomsData) {
+          // Clear existing rectangles (if any)
+          if (window.currentRectangles) {
+            window.currentRectangles.forEach((rect) => map.removeLayer(rect));
+          }
+          window.currentRectangles = [];
+
+          // Add new rectangles for each room in the floor
+          roomsData.forEach((room) => {
+            let rectangle = L.rectangle(room.coords, {
+              color: "red",
+              fillColor: "grey",
+              fillOpacity: 0.5,
+            })
+              .bindTooltip(room.name)
+              .addTo(map);
+
+            rectangle.on("click", function () {
+              // Log current color to debug
+              console.log("Got Clickled");
+
+              // Toggle color based on the current color
+              if (this.options.color === "red") {
+                this.setStyle({ color: "green" });
+              } else {
+                this.setStyle({ color: "red" });
+              }
+            });
+
+            window.currentRectangles.push(rectangle);
+          });
+
+          // Fit map bounds to show all new rectangles if there are any
+          if (roomsData.length > 0) {
+            let group = new L.featureGroup(window.currentRectangles);
+            //map.fitBounds(group.getBounds());
+          }
+        }
+        /////////////////////////////////////////////////////////////////////////////////////
+        // On loading of the DOM
+        document.addEventListener("DOMContentLoaded", () => {
+          // get dropdown container
+          const container = document.getElementById("dropdownContainer");
+
+          // for each building
+          buildings.forEach((building, buildingIndex) => {
+            const dropdown = document.createElement("div");
+            dropdown.classList.add("dropdown");
+
+            let floorsHTML = building.floors
+              .map((floor, floorIndex) => {
+                return `<li><a class="dropdown-item" data-building-index="${buildingIndex}" data-floor-index="${floorIndex}" href="#">${floor.name}</a></li>`;
+              })
+              .join("");
+
+            dropdown.innerHTML = `
+            <button class="btn btn-secondary dropdown-toggle" type="button"
+                    id="dropdownMenuButton${building.name.replace(/\s+/g, "")}"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                ${building.name}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${building.name.replace(
+              /\s+/g,
+              ""
+            )}">
+                ${floorsHTML}
+            </ul>
+        `;
+            container.appendChild(dropdown);
+          });
+
+          // Set up event listeners after dropdowns have been added to the DOM
+          const dropdownItems = document.querySelectorAll(".dropdown-item");
+          dropdownItems.forEach((item) => {
+            item.addEventListener("click", function (event) {
+              event.preventDefault(); // Prevent the default anchor click behavior
+
+              const buildingIndex = this.getAttribute("data-building-index");
+              const floorIndex = this.getAttribute("data-floor-index");
+              const building = buildings[buildingIndex];
+              console.log(building);
+              const floor = building.floors[floorIndex];
+
+              // Call displayImage with the image URL and dimensions
+              displayImage(floor.path, [[0, 0], floor.dims]);
+
+              // Call displayRoomsForFloor with the floor's rooms data
+              displayRoomsForFloor(
+                floor.rooms.map((room) => ({
+                  coords: room.coords,
+                  name: room.name,
+                }))
+              );
+            });
+          });
+        });
+      </script>
+    </div>
+
+    <!-- ////////////////////////////////////////////////MAP MAP MAP MAP///////////////////////////////////////////// -->
+    <!-- // Map Container -->
+    <div id="map-container">
+      <div id="map"></div>
+      <button id="saveButton">SAVE</button>
+    </div>
+
+    <script>
+      // Initialize Leaflet map
+      var map = L.map("map", { drawControl: true }).setView([0, 0], 1); // Adjust the center and zoom level
+      var imageUrl = "../pics/Morningstar/Floor3.png"; // Replace with your image path
+      var imageBounds = [
+        [0, 0],
+        [432, 211],
+      ]; // Adjust bounds to match your image size
+
+      let currentOverlay = null;
+
+      function displayImage(path, bounds) {
+        // this removes the previous png, not squares though
+        if (currentOverlay) {
+          map.removeLayer(currentOverlay);
+        }
+        currentOverlay = L.imageOverlay(path, bounds).addTo(map);
+        // Adjust map view to fit the image overlay
+        map.fitBounds(bounds);
+      }
+      displayImage(imageUrl, imageBounds);
+
+      ///////////////////////////////////////////LOAD JSON///////////////////////////////////////////////////
+      // Define a function to load JSON data from a file
+      // async function loadJsonFromFile() {
+      //   try {
+      //     // Fetch the JSON file
+      //     const response = await fetch("room_objects.json"); // Replace 'highlight_areas.json' with the path to your JSON file
+      //     if (!response.ok) {
+      //       throw new Error("Failed to fetch JSON data.");
+      //     }
+      //     // Parse the JSON response
+      //     const jsonData = await response.json();
+      //     return jsonData;
+      //   } catch (error) {
+      //     console.error("An error occurred while loading room objects:", error);
+      //     return null;
+      //   }
+      // }
+      ////////////////////////////////////////////////////////////////////////////////
+      var highlightAreas = [];
+      // Load JSON data when the page loads
+      window.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // Retrieve highlightAreas from the JsON file
+          const loadedData = await loadJsonFromFile();
+          if (loadedData) {
+            highlightAreas = loadedData;
+            console.log("Room objects loaded successfully:", highlightAreas);
+          }
+          // Add highlight areas to the map
+
+          highlightAreas.forEach(function (area) {
+            var room = L.rectangle(area.coordinates, {
+              color: "grey", // Border color
+              fillColor: "grey", // Fill color
+              fillOpacity: 0.5, // Fill opacity
+            })
+              .bindTooltip(area.name)
+              .addTo(map);
+
+            // Attach the click event listener directly after adding the rectangle to the map
+            room.on("click", function () {
+              // Log current color to debug
+              console.log("Got Clickled");
+
+              // Toggle color based on the current color
+              if (this.options.color === "red") {
+                this.setStyle({ color: "green" });
+              } else {
+                this.setStyle({ color: "red" });
+              }
+            });
+          });
+        } catch (error) {
+          console.error("An error occurred while loading room objects:", error);
+        }
+      });
+
+      ///////////////////////////////////////////////////////DRAWING//////////////////////////////////////////////////////////
+      map.on("draw:created", function (event) {
+        var roomName = prompt(
+          "Please enter a name for the room:",
+          "Room " + (highlightAreas.length + 1)
+        );
+
+        if (roomName) {
+          // If the user provided a name
+          var layer = event.layer;
+          var shapeType = event.layerType; // Type of shape (e.g., 'rectangle')
+          if (shapeType === "rectangle") {
+            // For rectangles, retrieve the bounds and extract the coordinates
+            var bounds = layer.getBounds();
+            var northEast = bounds.getNorthEast();
+            var southWest = bounds.getSouthWest();
+            shapeCoords = [
+              [northEast.lat, northEast.lng],
+              [southWest.lat, northEast.lng],
+              [southWest.lat, southWest.lng],
+              [northEast.lat, southWest.lng],
+            ];
+          }
+
+          // Create a room object with shape information
+          var room = {
+            name: roomName,
+            coordinates: shapeCoords,
+            // Add additional properties as needed
+          };
+          highlightAreas.push(room);
+
+          // Add highlight areas to the map
+          L.rectangle(shapeCoords, {
+            color: "red", // Border color
+            fillColor: "blue", // Fill color
+            fillOpacity: 0.5, // Fill opacity
+          })
+            .bindTooltip("New Room")
+            .addTo(map);
+        }
+      });
+
+      // Select the button element
+      const saveButton = document.getElementById("saveButton");
+
+      // Add click event listener to the button
+      // Define a function to save JSON data to a file
+      async function saveJsonToFile(jsonData) {
+        try {
+          // Create a Blob object containing the JSON data
+          const blob = new Blob([jsonData], { type: "application/json" });
+
+          // Create a download link
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "room_objects.json"; // File name
+
+          // Simulate a click on the download link to trigger the download
+          link.click();
+          console.log("Room objects saved successfully.");
+        } catch (error) {
+          console.error("An error occurred while saving room objects:", error);
+        }
+      }
+      // Add click event listener to the button
+      saveButton.addEventListener("click", async () => {
+        try {
+          // Convert highlightAreas array to JSON string
+          const jsonData = JSON.stringify(highlightAreas);
+
+          // Call the function to save JSON data to a file
+          await saveJsonToFile(jsonData);
+        } catch (error) {
+          console.error("An error occurred while saving room objects:", error);
+        }
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
